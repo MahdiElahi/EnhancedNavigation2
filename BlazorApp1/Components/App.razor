@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+    <link rel="stylesheet" href="bootstrap/bootstrap.min.css" />
+    <link rel="stylesheet" href="app.css" />
+    <link rel="stylesheet" href="BlazorApp1.styles.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <HeadOutlet />
+</head>
+
+<body>
+    <Routes />
+    <script src="/topbar/jquery-3.5.1.min.js"></script>
+    <script src="/topbar/prettify.min.js"></script>
+    <script src="/topbar/topbar.min.js"></script>
+    <script src="/topbar/topbar-site.js"></script>
+
+    <script src="_framework/blazor.web.js"></script>
+    <script>
+        const { fetch: originalFetch } = window;
+
+        window.fetch = async (...args) => {
+            const [url, options] = args;
+            if (options.headers && options.headers['accept'] && options.headers['accept'].includes('blazor-enhanced-nav')) {
+                ShowTopbarLoading();
+            }
+            return await originalFetch(...args);
+        }
+
+        Blazor.addEventListener('enhancedload', function () {
+            HideTopbar();
+        });
+    </script>
+</body>
+
+</html>
